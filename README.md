@@ -3,8 +3,8 @@ This scripts is for installing TKGm on internet restricted environment by improv
 especially for downloading all TKG images on internet connected VM first, and transfer and upload the images to container registry on internet-restrected
 
 
-# how to use
-## on  internet accessible environments 
+# How to use
+## On  internet accessible environments 
 Generate the publish-images Script by following [`Generate the publish-images Script` TKG public docs](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.4/vmware-tanzu-kubernetes-grid-14/GUID-mgmt-clusters-airgapped-environments.html)
 ```
 ./gen-publish-images.sh > publish-images.sh
@@ -47,10 +47,13 @@ run  `download-images.sh` on internet connected VM to download all TKG images un
 ```
 ./download-images.sh
 ```
-now transfer all the downloaded images and the generated scripts to VM on  internet-restrected environments 
 
-## on internet-restrected environments 
 
+## Transfer all the downloaded images and the generated scripts to VM on  internet-restrected environments 
+- tkg-publish-images-scripts
+- TKG_IMAGES_DOWNLOAD_FOLDER
+
+## On internet-restrected environments 
 copy the cacrtbase64d.crt 
 ```
 cp ./cacrtbase64d.crt /tmp/cacrtbase64d.crt
