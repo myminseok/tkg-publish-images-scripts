@@ -1,7 +1,7 @@
 # Purpose
 This scripts is for installing TKGm on internet restricted environment by improving the script from [`Generate the publish-images Script` TKG public docs](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.4/vmware-tanzu-kubernetes-grid-14/GUID-mgmt-clusters-airgapped-environments.html).
 especially for downloading all TKG images on internet connected VM first, and transfer and upload the images to container registry on internet-restrected
-
+- tested for TKGm 1.4 on vsphere
 
 # How to use
 ## On  internet accessible environments 
