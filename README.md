@@ -89,4 +89,4 @@ upload the copied TKG images to the internal container registry
 ```
 ./upload-images.sh
 ```
-now you ready to install TKG.
+now you are ready to install TKG.
