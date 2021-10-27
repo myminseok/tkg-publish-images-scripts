@@ -1,11 +1,12 @@
 # Purpose
-for installing TKG on Internet restricted environment, there is a provided script `gen-publish-images.sh` from [`Generate the publish-images Script` TKG public docs](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.4/vmware-tanzu-kubernetes-grid-14/GUID-mgmt-clusters-airgapped-environments.html). it generates a script `publish-images.sh` which will be run on internet connected env and download all TKG images and upload to internal custom container registry at the sametime. most of the time, it is required to download all TKG images on internet connected VM first, then transfer and upload the images to container registry on internet-restrected. <br>
+For installing TKG on Internet restricted environment, there is a provided script `gen-publish-images.sh` from [`Generate the publish-images Script` TKG public docs](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.4/vmware-tanzu-kubernetes-grid-14/GUID-mgmt-clusters-airgapped-environments.html). it generates a script `publish-images.sh` which will be run on internet connected env and download all TKG images and upload to internal custom container registry at the sametime. most of the time, it is required to download all TKG images on internet connected VM first, then transfer and upload the images to container registry on internet-restrected. <br>
 This scripts is for those case by leveraging the generated `publish-images.sh`.<br>
-and additionally, sometimes downloading stops due to unstable networks and othere issues, this scripts skips already download images, or upload on container images repositories to time efficiency.
-## TODOs
-download file integrity is not tested in case of download failure. in case of re-running script, please check the integrity of last downloaded file with hash or md5.
+Additionally, sometimes downloading stops due to unstable networks and othere issues, this scripts skips already download images, or upload on container images repositories for time efficiency.<br.
+This is tested for `TKGm 1.4` for vsphere infrastructure 
 
-- This is tested for `TKGm 1.4` for vsphere infrastructure 
+## TODO
+download file integrity is not tested in case of download failure. in case of re-running script, please check the integrity of last downloaded file with hash or md5<br>
+
 
 
 # How to use
