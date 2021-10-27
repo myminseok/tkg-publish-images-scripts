@@ -6,7 +6,7 @@ This is tested for `TKGm 1.4` for vsphere infrastructure.
 
 
 ## TODO
-downloaded file integrity check is not tested in case of download failure. in case of re-running scripts, please check the integrity of last downloaded file with hash or md5<br>
+downloaded file integrity check is not tested in case of download failure. this script used temporary folder to cope with this case but in case of re-running scripts, please check the integrity of last downloaded file with hash or md5.<br>
 
 # How to use
 
