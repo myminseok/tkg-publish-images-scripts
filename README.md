@@ -7,9 +7,11 @@ This is tested for `TKGm 1.4` for vsphere infrastructure
 ## TODO
 downloaded file integrity check is not tested in case of download failure. in case of re-running scripts, please check the integrity of last downloaded file with hash or md5<br>
 
-
-
 # How to use
+## Pre-requisites
+- docker engine on local VM
+- imgpkg v0.15.0+ (https://github.com/vmware-tanzu/carvel-imgpkg/releases/tag/v0.15.0) 
+
 ## On  internet accessible environments 
 
 define variables on `tanzu-no-internet-env.sh` to be used to generate scripts. all variables here respects [TKG installation guide](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.3/vmware-tanzu-kubernetes-grid-13/GUID-tanzu-config-reference.html#private-image-repository-configuration-8)
