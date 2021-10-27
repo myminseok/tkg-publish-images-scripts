@@ -17,7 +17,7 @@ downloaded file integrity check is not tested in case of download failure. in ca
 - docker engine on local VM
 - imgpkg v0.15.0+ (https://github.com/vmware-tanzu/carvel-imgpkg/releases/tag/v0.15.0). previous imgpkg has bug on handing image url based sha256 scheme(https://github.com/vmware-tanzu/carvel-imgpkg/issues/142)
 
-## On  internet accessible environments 
+## On internet accessible environment
 
 define variables on `tanzu-no-internet-env.sh` to be used to generate scripts. all variables here respects [TKG installation guide](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.3/vmware-tanzu-kubernetes-grid-13/GUID-tanzu-config-reference.html#private-image-repository-configuration-8)
 ```
@@ -99,7 +99,7 @@ run  `download-images.sh` on internet connected VM to download all TKG images un
 - tkg-publish-images-scripts
 - TKG_IMAGES_DOWNLOAD_FOLDER
 
-## On internet-restrected environments 
+## On internet-restrected environment
 copy the cacrtbase64d.crt 
 ```
 cp ./cacrtbase64d.crt /tmp/cacrtbase64d.crt
