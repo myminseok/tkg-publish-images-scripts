@@ -10,7 +10,7 @@ OUTPUT_DOWNLOAD_SCRIPT="./download-images.sh"
 OUTPUT_UPLOAD_SCRIPT="./upload-images.sh"
 OUTPUT_PUBLISH_SCRIPT="./download-upload-images.sh"
 TKG_CUSTOM_IMAGE_REPOSITORY=${TKG_CUSTOM_IMAGE_REPOSITORY:-''}
-TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE_PATH=${TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE_PATH:-''}
+TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE=${TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE:-''}
 TKG_IMAGES_DOWNLOAD_FOLDER=${TKG_IMAGES_DOWNLOAD_FOLDER:-''}
 
 if [ -z "$TKG_CUSTOM_IMAGE_REPOSITORY" ]; then
@@ -28,7 +28,11 @@ if [ ! -f "$SOURCE_SCRIPT" ]; then
     echo "- [WARN] no file exists $SOURCE_SCRIPT"
     exit 1
 fi
-
+if [ -n "$TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE" ]; then
+  echo $TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE > /tmp/cacrtbase64
+  base64 -d /tmp/cacrtbase64 > ./cacrtbase64d.crt
+  echo "generated ./cacrtbase64d.crt"
+fi
 
 ### for download script
 echo "#!/bin/bash" > $OUTPUT_DOWNLOAD_SCRIPT
