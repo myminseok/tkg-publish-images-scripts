@@ -1,5 +1,14 @@
 #!/bin/bash
 
+get_image_tag(){
+  actualImageRepo=$1
+  imageTag=`echo $actualImageRepo | cut -d':' -f 2`
+  if [[ "$actualImageRepo" =~ "@sha256"  ]]; then  # sha256 tagging with imgpkg has unique format
+    echo "sha256-$imageTag.imgpkg"
+  else
+    echo "$imageTag"
+  fi
+}
 ##projects.registry.vmware.com/tkg/tkg-bom:v1.4.0
 ## return filename path
 gen_download_tar_name(){
@@ -15,7 +24,6 @@ download_image(){
   actualImageRepo=$2
   customRepo=$4	
   customRepoCaPath=$6
-  imageTag=`echo $actualImageRepo | cut -d':' -f 2`
   set -e
   downloadTarPath="$(gen_download_tar_name $actualImageRepo)"
   if [ -f "$downloadTarPath" ]; then
@@ -33,7 +41,7 @@ upload_image(){
   actualImageRepo=$2
   customRepo=$4
   customRepoCaPath=$6
-  imageTag=`echo $actualImageRepo | cut -d':' -f 2`
+  imageTag=$(get_image_tag $actualImageRepo)
   echo "[INFO] checking $customRepo:$imageTag"
   set +e
   docker manifest inspect "$customRepo:$imageTag" > /dev/null
@@ -62,7 +70,7 @@ download_upload_image(){
   actualImageRepo=$2
   customRepo=$4
   customRepoCaPath=$6
-  imageTag=`echo $actualImageRepo | cut -d':' -f 2`
+  imageTag=$(get_image_tag $actualImageRepo)
   echo "[INFO] checking $customRepo:$imageTag"
   set +e
   docker manifest inspect "$customRepo:$imageTag" > /dev/null
