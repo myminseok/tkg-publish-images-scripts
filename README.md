@@ -51,7 +51,7 @@ generated ./upload-images.sh
 generated ./download-upload-images.sh
 
 ```
-Now this is file list for now.
+Now this is file list you have
 
 ```
 On Internet Connected VM
