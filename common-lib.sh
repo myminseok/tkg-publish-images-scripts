@@ -56,7 +56,8 @@ upload_image(){
     return
   fi
   set -e
-  downloadTarPath="$(gen_download_tar_name $actualImageRepo)"
+  downloadTarName="$(gen_download_tar_name $actualImageRepo)"
+  downloadTarPath="$TKG_IMAGES_DOWNLOAD_FOLDER/$downloadTarName"
   if [ ! -f "$downloadTarPath" ]; then
     echo "- [ERROR] no tar image exists as $downloadTarPath"
     set -e 
@@ -75,23 +76,6 @@ download_upload_image(){
   actualImageRepo=$2
   customRepo=$4
   customRepoCaPath=$6
-  imageTag=$(get_image_tag $actualImageRepo)
-  echo "[INFO] checking $customRepo:$imageTag"
-  set +e
-  docker manifest inspect "$customRepo:$imageTag" > /dev/null
-  if [ $? -eq 0 ] ; then
-    echo "- skip processing. image alreay exists in $customRepo"
-    set -e
-    return
-  fi
-  set -e
-  downloadTarPath="$(gen_download_tar_name $actualImageRepo)"
-  if [ -f "$downloadTarPath" ]; then
-    echo "- skip downloading. tar image alreay exists in $downloadTarPath"
-  else
-    echo "- downloading ($imageOrBundle) $actualImageRepo' as $downloadTarPath"
-    imgpkg copy $imageOrBundle $actualImageRepo --to-tar "$downloadTarPath"
-  fi
-  echo "- uploading image $actualImageRepo to $customRepo"
-  imgpkg copy --tar $downloadTarPath  --to-repo $customRepo --registry-ca-cert-path $customRepoCaPath
+  download_image $imageOrBundle $actualImageRepo --to-repo $customRepo --registry-ca-cert-path $customRepoCaPath
+  upload_image $imageOrBundle $actualImageRepo --to-repo $customRepo --registry-ca-cert-path $customRepoCaPath
 }
