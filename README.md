@@ -5,7 +5,7 @@ Additionally, sometimes downloading stops due to unstable networks and othere is
 This is tested for `TKGm 1.4` for vsphere infrastructure 
 
 ## TODO
-download file integrity is not tested in case of download failure. in case of re-running script, please check the integrity of last downloaded file with hash or md5<br>
+downloaded file integrity check is not tested in case of download failure. in case of re-running scripts, please check the integrity of last downloaded file with hash or md5<br>
 
 
 
