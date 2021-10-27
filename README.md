@@ -30,7 +30,7 @@ cp publish-images.sh ./tkg-publish-images-scripts/publish-images.sh
 cd ./tkg-publish-images-scripts
 ```
 
-define variables on `tanzu-no-internet-env.sh` to be used to generate scripts. all variables here respectes [TKG installation guide](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.3/vmware-tanzu-kubernetes-grid-13/GUID-tanzu-config-reference.html#private-image-repository-configuration-8)
+define variables on `tanzu-no-internet-env.sh` to be used to generate scripts. all variables here respects [TKG installation guide](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.3/vmware-tanzu-kubernetes-grid-13/GUID-tanzu-config-reference.html#private-image-repository-configuration-8)
 ```
 vi tanzu-no-internet-env.sh
 
