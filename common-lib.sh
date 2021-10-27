@@ -13,9 +13,9 @@ get_image_tag(){
 ## return filename path
 gen_download_tar_name(){
    ## remove domain.
-   contexts=`echo $1 | cut -d'/' -f2- | sed 's/\//__/g'`
+   contexts=`echo $1 | cut -d'/' -f2- | sed 's/[@\/]/__/g'`
    ##tarName=`basename $1 | awk -F":" '{print $1"__"$2}'`
-   echo "$TKG_IMAGES_DOWNLOAD_FOLDER/${contexts}.imgpkg"
+   echo "${contexts}.imgpkg"
 }
 ## if images alread downloaded, skip download 
 ## param: -i projects.registry.vmware.com/tkg/tkg-bom:v1.4.0 --to-repo infra-harbor.lab.pcfdemo.net/tkg/tkg-bom --registry-ca-cert-path /tmp/cacrtbase64d.crt
@@ -25,12 +25,17 @@ download_image(){
   customRepo=$4	
   customRepoCaPath=$6
   set -e
-  downloadTarPath="$(gen_download_tar_name $actualImageRepo)"
-  if [ -f "$downloadTarPath" ]; then
-    echo "- skip downloading. tar image alreay exists in $downloadTarPath"
+  downloadTarName="$(gen_download_tar_name $actualImageRepo)"
+  downloadTarSuccess="$TKG_IMAGES_DOWNLOAD_FOLDER/$downloadTarName"
+  downloadTarTmp="/tmp/tkg/$downloadTarName"
+  mkdir -p "/tmp/tkg/"
+  if [ -f "$downloadTarSuccess" ]; then
+    echo "- skip downloading. tar image alreay exists in $downloadTarSuccess"
   else
-    echo "- downloading ($imageOrBundle) $actualImageRepo' as $downloadTarPath"
-    imgpkg copy $imageOrBundle $actualImageRepo --to-tar "$downloadTarPath"
+    echo "- downloading ($imageOrBundle) $actualImageRepo' as $downloadTarTmp"
+    imgpkg copy $imageOrBundle $actualImageRepo --to-tar "$downloadTarTmp"
+    mv $downloadTarTmp $downloadTarSuccess #copy only after download successfully
+    echo "  download complete $downloadTarSuccess"
   fi
 }
 
