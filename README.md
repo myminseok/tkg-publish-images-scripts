@@ -11,7 +11,8 @@ downloaded file integrity check is not tested in case of download failure. in ca
 # How to use
 
 ## Pre-requisites
-- tested for `TKGm 1.4` for vsphere infrastructure.
+- tested for `TKGm 1.4` for vsphere infrastructure
+- tested uploadin image on harbor
 - this scripts support bash on linux only.
 - docker engine on local VM
 - imgpkg v0.15.0+ (https://github.com/vmware-tanzu/carvel-imgpkg/releases/tag/v0.15.0) 
