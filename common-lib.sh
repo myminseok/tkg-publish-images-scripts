@@ -53,9 +53,9 @@ upload_image(){
   set -e
   downloadTarPath="$(gen_download_tar_name $actualImageRepo)"
   if [ ! -f "$downloadTarPath" ]; then
-    echo "- [WARN] no tar image  exists as $downloadTarPath"
+    echo "- [ERROR] no tar image exists as $downloadTarPath"
     set -e 
-    return
+    exit 1
   fi
   echo "- uploading image $actualImageRepo to $customRepo"
   imgpkg copy --tar $downloadTarPath  --to-repo $customRepo --registry-ca-cert-path $customRepoCaPath
