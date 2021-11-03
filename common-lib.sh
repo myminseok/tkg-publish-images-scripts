@@ -20,7 +20,6 @@ gen_download_tar_name(){
 gen_download_tar_name_with_domain(){
    ## preserve domain and context
    domain_context=`echo $1 | cut -d'/' -f1- | sed 's/[@\/]/__/g'`
-   ##tarName=`basename $1 | awk -F":" '{print $1"__"$2}'`
    echo "${domain_context}.imgpkg"
 }
 ## rename image name to include domain
