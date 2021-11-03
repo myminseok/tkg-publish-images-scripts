@@ -58,3 +58,6 @@ sed 's/imgpkg copy/download_upload_image/g' $SOURCE_SCRIPT >> $OUTPUT_PUBLISH_SC
 chmod +x $OUTPUT_PUBLISH_SCRIPT
 echo "generated $OUTPUT_PUBLISH_SCRIPT"
 
+sed 's/download_image/rename_downloaded_image/g' $OUTPUT_DOWNLOAD_SCRIPT> rename-downloaded-images.sh
+chmod +x rename-downloaded-images.sh
+
