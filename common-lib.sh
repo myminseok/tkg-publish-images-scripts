@@ -89,7 +89,11 @@ upload_image(){
     exit 1
   fi
   echo "- uploading image: imgpkg copy --tar $downloadTarPath  --to-repo $customRepo --registry-ca-cert-path $customRepoCaPath"
-  imgpkg copy --tar $downloadTarPath  --to-repo $customRepo --registry-ca-cert-path $customRepoCaPath
+  if [ -n "$customRepoCaPath" ]; then
+    imgpkg copy --tar $downloadTarPath  --to-repo $customRepo --registry-ca-cert-path $customRepoCaPath
+  else
+    imgpkg copy --tar $downloadTarPath  --to-repo $customRepo 
+  fi
 }
 
 

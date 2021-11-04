@@ -46,6 +46,7 @@ echo "generated $OUTPUT_DOWNLOAD_SCRIPT"
 echo "#!/bin/bash" > $OUTPUT_UPLOAD_SCRIPT
 echo "export TKG_IMAGES_DOWNLOAD_FOLDER=$TKG_IMAGES_DOWNLOAD_FOLDER" >> $OUTPUT_UPLOAD_SCRIPT
 echo "source ./common-lib.sh" >> $OUTPUT_UPLOAD_SCRIPT
+echo "if [ -f "./cacrtbase64d.crt" ]; then cp ./cacrtbase64d.crt /tmp/cacrtbase64d.crt; fi" >> $OUTPUT_UPLOAD_SCRIPT
 sed 's/imgpkg copy/upload_image/g' $SOURCE_SCRIPT >> $OUTPUT_UPLOAD_SCRIPT
 chmod +x $OUTPUT_UPLOAD_SCRIPT
 echo "generated $OUTPUT_UPLOAD_SCRIPT"

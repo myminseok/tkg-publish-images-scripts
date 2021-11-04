@@ -1,6 +1,7 @@
 #!/bin/bash
 export TKG_IMAGES_DOWNLOAD_FOLDER=/data/tanzu-main-1.4-bin/tkg-images
 source ./common-lib.sh
+if [ -f ./cacrtbase64d.crt ]; then cp ./cacrtbase64d.crt /tmp/cacrtbase64d.crt; fi
 set -eo pipefail
 # Note that yq must be version above or equal to version 4.9.2 and below version 5.
 # Processing TKG BOM file tkg-bom-v1.4.0.yaml
