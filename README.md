@@ -7,7 +7,7 @@ benefits:
 - skips already upload images to the target container repos
 - resumes from the failed downloading/uploading images due to unstable networks or other issues
 
-**NOTE** tested for TKGm 1.4 for vsphere infrastructure
+**NOTE** tested for TKGm 1.4 for vsphere infrastructure<br>
 **TODO** scripts provides here doesn't do file integrity check download files. although scripts here uses temporary folder(/tmp) and move files once download successful to cope with failures, you need to check the integrity last downloaded file with hash or md5 to improve integrity
 
 # How to use
