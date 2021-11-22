@@ -1,5 +1,5 @@
 #!/bin/bash
-export TKG_IMAGES_DOWNLOAD_FOLDER=/data/tanzu-main-1.4-bin/tkg-images
+export TKG_IMAGES_DOWNLOAD_FOLDER=/data/tanzu-bin-1.4/tkg-images
 source ./common-lib.sh
 if [ -f ./cacrtbase64d.crt ]; then cp ./cacrtbase64d.crt /tmp/cacrtbase64d.crt; fi
 set -eo pipefail

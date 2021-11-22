@@ -1,5 +1,5 @@
 #!/bin/bash
-export TKG_IMAGES_DOWNLOAD_FOLDER=/data/tanzu-main-1.4-bin/tkg-images
+export TKG_IMAGES_DOWNLOAD_FOLDER=/data/tanzu-bin-1.4/tkg-images
 source ./common-lib.sh
 set -eo pipefail
 # Note that yq must be version above or equal to version 4.9.2 and below version 5.
