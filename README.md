@@ -2,7 +2,7 @@
 To install TKG on internet restricted environment, you need to pull all tkg images and transfer to the target environment. one simple way is pull all images from internet connected VM and then export and transfer the VM image. but there are some draw-backs, such as binary size and time to export the VM. sometimes, you need to download and upload the images you need for upgarde or patch. this guide explains how you can do above in a size and time efficient manner.
 
 benefits:
-- smaller file size to tansfer compares to VM( ex, ubuntu VM size 123G,  3 hours to export VM)
+- smaller file size to tansfer compares to VM( ex, 123G ubuntu VM size vs 30 GB tkg-image itself,  3 hours to export VM)
 - skips already download images
 - skips already upload images to the target container repos
 - resumes from the failed downloading/uploading images due to unstable networks or other issues(see sample error message in the Appendix this file) 
