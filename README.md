@@ -5,7 +5,7 @@ benefits:
 - smaller file size to tansfer compares to VM( ex, ubuntu VM size 123G,  3 hours to export VM)
 - skips already download images
 - skips already upload images to the target container repos
-- resumes from the failed downloading/uploading images due to unstable networks or other issues
+- resumes from the failed downloading/uploading images due to unstable networks or other issues(see sample error message in the Appendix this file) 
 
 **NOTE** tested for TKGm 1.4 for vsphere infrastructure<br>
 **TODO** scripts provides here doesn't do file integrity check download files. although scripts here uses temporary folder(/tmp) and move files once download successful to cope with failures, you need to check the integrity last downloaded file with hash or md5 to improve integrity
@@ -111,3 +111,20 @@ upload the copied TKG images to the internal container registry
 ./upload-images.sh
 ```
 now you are ready to install TKG. Enjoy Tanzu!
+
+
+## Appendix
+### typical error message while downloading image.
+```
+- downloading (-i) projects.registry.vmware.com/tkg/harbor/harbor-db:v2.2.3_vmware.1 as /tmp/publish-images/projects.registry.vmware.com__tkg__harbor__harbor-db:v2.2.3_vmware.1.imgpkg
+copy | exporting 1 images...
+copy | will export projects.registry.vmware.com/tkg/harbor/harbor-db@sha256:26ce0071b528944fd33080f273d0812da479da557eee2727409bd4162719deff
+copy | exported 1 images
+Error: Collecting packaging metadata: Working with projects.registry.vmware.com/tkg/harbor/harbor-db@sha256:26ce0071b528944fd33080f273d0812da479da557eee2727409bd4162719deff: GET https://projects.registry.vmware.com/service/token?scope=repository%3Atkg%2Fharbor%2Fharbor-db%3Apull&service=harbor-registry: unexpected status code 504 Gateway Timeout: <HTML><HEAD>
+<TITLE>Gateway Timeout - In read </TITLE>
+</HEAD><BODY>
+<H1>Gateway Timeout</H1>
+The proxy server did not receive a timely response from the upstream server.<P>
+Reference&#32;&#35;1&#46;ae7a4668&#46;1642127872&#46;69882c7
+</BODY></HTML>
+```
