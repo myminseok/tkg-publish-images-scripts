@@ -23,7 +23,6 @@ benefits:
 define variables on `tanzu-no-internet-env.sh` to be used to generate scripts. all variables here respects [TKG installation guide](https://docs.vmware.com/en/VMware-Tanzu-Kubernetes-Grid/1.3/vmware-tanzu-kubernetes-grid-13/GUID-tanzu-config-reference.html#private-image-repository-configuration-8)
 ```
 vi tanzu-no-internet-env.sh
-
 export TKG_IMAGE_REPO="projects.registry.vmware.com/tkg"
 export TKG_CUSTOM_IMAGE_REPOSITORY="infra-harbor.lab.pcfdemo.net/tkg"
 export TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE="YOUR-TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE"
@@ -60,6 +59,7 @@ export TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE="YOUR-TKG_CUSTOM_IMAGE_REPOSIT
 
 export TKG_IMAGES_DOWNLOAD_FOLDER="/data/tanzu-main-1.4-bin/tkg-images"
 ```
+> Required. TKG_IMAGES_DOWNLOAD_FOLDER: all the download docker images will be located here and the folder will be created if you run the generated script later on .
 > Optional. Set if your private image registry uses a self-signed certificate. Provide the CA certificate in base64 encoded format, for example TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE: "LS0t[...]tLS0tLQ=="".
 
 now generate scripts.
