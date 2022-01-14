@@ -6,9 +6,9 @@ set -eo pipefail
 
 
 SOURCE_SCRIPT="./publish-images.sh"
-OUTPUT_DOWNLOAD_SCRIPT="./download-images.sh"
-OUTPUT_UPLOAD_SCRIPT="./upload-images.sh"
-OUTPUT_PUBLISH_SCRIPT="./download-upload-images.sh"
+OUTPUT_DOWNLOAD_SCRIPT="./download-images-generated.sh"
+OUTPUT_UPLOAD_SCRIPT="./upload-images-generated.sh"
+OUTPUT_PUBLISH_SCRIPT="./download-upload-images-generated.sh"
 TKG_CUSTOM_IMAGE_REPOSITORY=${TKG_CUSTOM_IMAGE_REPOSITORY:-''}
 TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE=${TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE:-''}
 TKG_IMAGES_DOWNLOAD_FOLDER=${TKG_IMAGES_DOWNLOAD_FOLDER:-''}
