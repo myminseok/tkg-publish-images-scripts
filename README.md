@@ -15,7 +15,7 @@ benefits:
 
 ## Pre-requisites
 - ubuntu VM with docker engine (with 100GB free size)
-- internal harbor repository 
+- internal container repository such as harbor
 - imgpkg v0.15.0+ (https://github.com/vmware-tanzu/carvel-imgpkg/releases/tag/v0.15.0)
 
 ## On internet accessible environment
