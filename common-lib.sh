@@ -1,6 +1,32 @@
 #!/bin/bash
 
-get_image_tag(){
+## param: projects.registry.vmware.com/tkg/file:v1.4.0 source_string new_string
+## return: new_domain/tkg/file:v1.4.0
+replace_domain_from_url(){
+  originalUrl=$(get_image_repo_from_url $1 | sed 's/\//___/g')
+  originalDomain=$(echo $2 | sed 's/\//___/g')
+  newDomain=$(echo $3 | sed 's/\//___/g')
+  newUrl=$(echo $originalUrl | sed "s/$originalDomain/$newDomain/g" | sed 's/___/\//g')
+  echo $newUrl
+}
+
+## param: projects.registry.vmware.com/tkg/tkg-bom:v1.4.0
+## return domain: projects.registry.vmware.com
+get_domain_from_url(){
+  echo $( echo $1 | cut -d'/' -f1 )
+}
+
+
+## param: projects.registry.vmware.com/tkg/tkg-bom:v1.4.0
+## return tag: projects.registry.vmware.com/tkg/tkg-bom
+get_image_repo_from_url(){
+  actualImageRepo=$1
+  echo $(echo $actualImageRepo | cut -d':' -f 1)
+}
+
+## param: projects.registry.vmware.com/tkg/tkg-bom:v1.4.0
+## return tag: v1.4.0
+get_tag_from_url(){
   actualImageRepo=$1
   imageTag=`echo $actualImageRepo | cut -d':' -f 2`
   if [[ "$actualImageRepo" =~ "@sha256"  ]]; then  # sha256 tagging with imgpkg has unique format
@@ -9,47 +35,22 @@ get_image_tag(){
     echo "$imageTag"
   fi
 }
-##projects.registry.vmware.com/tkg/tkg-bom:v1.4.0
-## return filename path
-gen_download_tar_name(){
-   ## remove domain.
-   contexts=`echo $1 | cut -d'/' -f2- | sed 's/[@\/]/__/g'`
-   echo "${contexts}.imgpkg"
-}
 
-gen_download_tar_name_with_domain(){
+## param: projects.registry.vmware.com/dep1/dep2/dep3/file:v1.4.
+## return replace slash: projects.registry.vmware.com__dep1__dep2__dep3__file:v1.4.0.imgpkg
+gen_download_tar_name(){
    ## preserve domain and context
    domain_context=`echo $1 | cut -d'/' -f1- | sed 's/[@\/]/__/g'`
    echo "${domain_context}.imgpkg"
 }
-## rename image name to include domain
-rename_downloaded_image(){
-  imageOrBundle=$1
-  actualImageRepo=$2
-  customRepo=$4	
-  customRepoCaPath=$6
-  set -e
-  downloadTarNameOld="$(gen_download_tar_name $actualImageRepo)"
-  downloadTarName="$(gen_download_tar_name_with_domain $actualImageRepo)"
-  downloadTarSuccessOld="$TKG_IMAGES_DOWNLOAD_FOLDER/$downloadTarNameOld"
-  downloadTarSuccess="$TKG_IMAGES_DOWNLOAD_FOLDER/$downloadTarName"
-  if [ -f "$downloadTarSuccessOld" ]; then
-    echo "- rename download image $downloadTarSuccess"
-    mv $downloadTarSuccessOld $downloadTarSuccess
-  else
-    echo "- old file not found $downloadTarSuccessOld"
-  fi
-}
 
 ## if images alread downloaded, skip download 
-## param: -i projects.registry.vmware.com/tkg/tkg-bom:v1.4.0 --to-repo infra-harbor.lab.pcfdemo.net/tkg/tkg-bom --registry-ca-cert-path /tmp/cacrtbase64d.crt
+## param: imgpkg copy -i projects.registry.vmware.com/tkg/tkg-compatibility:v6 --to-tar tkg-compatibility-v6.tar
 download_image(){
-  imageOrBundle=$1
-  actualImageRepo=$2
-  customRepo=$4	
-  customRepoCaPath=$6
+  imageOrBundle=$3
+  actualImageRepo=$4
   set -e
-  downloadTarName="$(gen_download_tar_name_with_domain $actualImageRepo)"
+  downloadTarName="$(gen_download_tar_name $actualImageRepo)"
   downloadTarSuccess="$TKG_IMAGES_DOWNLOAD_FOLDER/$downloadTarName"
   downloadTarTmp="/tmp/publish-images/$downloadTarName"
   mkdir -p "/tmp/publish-images/"
@@ -63,24 +64,25 @@ download_image(){
   fi
 }
 
-## if images not exists on custom repo, then upload
-## param: -i projects.registry.vmware.com/tkg/tkg-bom:v1.4.0 --to-repo infra-harbor.lab.pcfdemo.net/tkg/tkg-bom --registry-ca-cert-path /tmp/cacrtbase64d.crt
+## upload to target repo onlyif images not exists on custom repo
+## param: imgpkg copy -i projects.registry.vmware.com/tkg/tkg-compatibility:v6 --to-tar tkg-compatibility-v6.tar --to-repo infra-harbor.lab.pcfdemo.net/tkg/tkg-bom --registry-ca-cert-path /tmp/cacrtbase64d.crt
 upload_image(){
-  imageOrBundle=$1
-  actualImageRepo=$2
-  customRepo=$4
-  customRepoCaPath=$6
-  imageTag=$(get_image_tag $actualImageRepo)
-  echo "[INFO] checking $customRepo:$imageTag"
+  imageOrBundle=$3
+  actualImageRepo=$4
+  customRepo=$8
+  customRepoCaPath=${10}
+
+  imageTag=$(get_tag_from_url $actualImageRepo)
+  echo "- checking $customRepo:$imageTag"
   set +e
-  docker manifest inspect "$customRepo:$imageTag" > /dev/null
+  docker manifest inspect "$customRepo:$imageTag" > /dev/null 2>&1
   if [ $? -eq 0 ] ; then
-    echo "- skip processing. image alreay exists in $customRepo"
+    echo "- skip uploading. image alreay exists in $customRepo"
     set -e
     return
   fi
   set -e
-  downloadTarName="$(gen_download_tar_name_with_domain $actualImageRepo)"
+  downloadTarName="$(gen_download_tar_name $actualImageRepo)"
   downloadTarPath="$TKG_IMAGES_DOWNLOAD_FOLDER/$downloadTarName"
   if [ ! -f "$downloadTarPath" ]; then
     echo "- [ERROR] no tar image exists as $downloadTarPath"
@@ -93,17 +95,4 @@ upload_image(){
   else
     imgpkg copy --tar $downloadTarPath  --to-repo $customRepo 
   fi
-}
-
-
-## if images not exists on custom repo, then download and upload
-## if images alread downloaded, skip download and upload
-## PARAM: -i projects.registry.vmware.com/tkg/tkg-bom:v1.4.0 --to-repo infra-harbor.lab.pcfdemo.net/tkg/tkg-bom --registry-ca-cert-path /tmp/cacrtbase64d.crt
-download_upload_image(){
-  imageOrBundle=$1
-  actualImageRepo=$2
-  customRepo=$4
-  customRepoCaPath=$6
-  download_image $imageOrBundle $actualImageRepo --to-repo $customRepo --registry-ca-cert-path $customRepoCaPath
-  upload_image $imageOrBundle $actualImageRepo --to-repo $customRepo --registry-ca-cert-path $customRepoCaPath
 }
