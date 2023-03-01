@@ -20,11 +20,13 @@ mkdir -p $TKG_IMAGES_DOWNLOAD_FOLDER
 
 
 commands="$(cat ${images_script} |grep imgpkg |uniq)"
-
+total="$(grep imgpkg ${images_script} | wc -l)"
+index=1
 while IFS= read -r cmd; do
-  echo -e "\nrunning $cmd\n"
+  echo -e "\n($index/$total) $cmd\n"
   until download_image $cmd; do
-     echo -e "\nDownload failed. Retrying....\n"
+     echo -e "\n($index/$total) Download failed. Retrying.... \n"
      sleep 1
   done
+  index=$(( $index + 1 ))
 done <<< "$commands"

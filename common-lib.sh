@@ -45,7 +45,7 @@ gen_download_tar_name(){
 }
 
 ## if images alread downloaded, skip download 
-## param: imgpkg copy -i projects.registry.vmware.com/tkg/tkg-compatibility:v6 --to-tar tkg-compatibility-v6.tar
+## param: imgpkg copy -i projects.registry.vmware.com/tkg/tkg-compatibility:v6
 download_image(){
   imageOrBundle=$3
   actualImageRepo=$4
@@ -65,6 +65,7 @@ download_image(){
 }
 
 ## upload to target repo onlyif images not exists on custom repo
+## param: imgpkg copy -i projects.registry.vmware.com/tkg/tkg-compatibility:v6 --to-repo infra-harbor.lab.pcfdemo.net/tkg-1.5/tkg-compatibility --registry-ca-cert-path /tmp/cacrtbase64d.crt
 ## param: imgpkg copy -i projects.registry.vmware.com/tkg/tkg-compatibility:v6 --to-tar tkg-compatibility-v6.tar --to-repo infra-harbor.lab.pcfdemo.net/tkg/tkg-bom --registry-ca-cert-path /tmp/cacrtbase64d.crt
 upload_image(){
   imageOrBundle=$3

@@ -32,7 +32,7 @@ fi
 #commands="$(cat ${images_script} |grep imgpkg |sort |uniq)"
 commands="$(cat ${images_script} |grep imgpkg |uniq)"
 
-## param: imgpkg copy -i projects.registry.vmware.com/tkg/tkg-bom:v1.5.2 --to-tar tkg-bom-v1.5.2.tar
+## param: imgpkg copy -i projects.registry.vmware.com/tkg/tkg-bom:v1.5.2 
 ## return: new_domain/tkg/tkg-bom
 gen_target_image_repo(){
   actualImageUrl=$4
@@ -40,16 +40,19 @@ gen_target_image_repo(){
   targetImageRepo=$(replace_domain_from_url $actualImageRepo $TKG_IMAGE_REPO $TKG_CUSTOM_IMAGE_REPOSITORY)
   echo $targetImageRepo
 }
- 
+
+total="$(grep imgpkg ${images_script} | wc -l)"
+index=1
 while IFS= read -r cmd; do 
   to_repo=$(gen_target_image_repo $cmd)
   command="upload_image $cmd --to-repo $to_repo"
   if [ -n "$TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE" ]; then
     command="upload_image $cmd --to-repo $to_repo --registry-ca-cert-path ./cacrtbase64d.crt"
   fi
-  echo -e "\nrunning $command"
+  echo -e "\n($index/$total) $command"
   until $command; do
-     echo -e "\nUpload failed. Retrying....\n"
+     echo -e "\n($index/$total) Upload failed. Retrying....\n"
      sleep 1
   done
+  index=$(( $index + 1 ))
 done <<< "$commands"
