@@ -1,5 +1,5 @@
 # Purpose
-To install TKG on internet restricted environment, you need to pull all tkg images and transfer to the target environment. one simple way is pull all images from internet connected VM and then export and transfer the VM image. but there are some draw-backs, such as binary size and time to export the VM. sometimes, you need to download and upload the images you need for upgrade or patch. this guide explains how you can do above in a size and time efficient manner.
+To install TKG on internet restricted environment, you need to pull all tkg images and transfer to the target environment. one simple way is pull all images from internet connected VM and then export and transfer the VM image. but there are some draw-backs, such as binary size and time to export the VM. sometimes, you need to download and upload the images you need for upgarde or patch. this guide explains how you can do above in a size and time efficient manner.
 
 benefits:
 - smaller file size to tansfer compares to VM( ex, ubuntu VM size 123G,  3 hours to export VM)
@@ -31,22 +31,31 @@ export TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE="YOUR-TKG_CUSTOM_IMAGE_REPOSIT
 ```
 > Optional. Set if your private image registry uses a self-signed certificate. Provide the CA certificate in base64 encoded format, for example TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE: "LS0t[...]tLS0tLQ=="".
 
+
 ## download images
-run  `download-images-as-file.sh` on internet connected VM to download all TKG images under the folder TKG_IMAGES_DOWNLOAD_FOLDER defined in `tanzu-no-internet-env.sh` 
+run  `download-images-as-tar.sh` on internet connected VM to download all TKG images under the folder TKG_IMAGES_DOWNLOAD_FOLDER defined in `tanzu-no-internet-env.sh` 
 
 ```
 source ./tanzu-no-internet-env.sh
-download-images-as-file.sh ./images-copy-list
+download-images-as-tar.sh ./images-copy-list
 ```
-### Transfer all the downloaded images and the generated scripts to VM on  internet-restrected environments 
+> if the image is already downloaded, then skip downloading the image
+> it will keep retrying to download the item until it success.
+> if the downloading failed, then record to "/tmp/tkg_failed_downloading_tar_list.txt" and continue the downloading the next item.
+
+## Transfer all the downloaded images and the generated scripts to VM on  internet-restrected environments 
 - tkg-publish-images-scripts
 - TKG_IMAGES_DOWNLOAD_FOLDER
 
 ## On internet-restrected environment
-
-### upload the copied TKG images to the internal container registry
+upload the copied TKG images to the internal container registry
 ```
-source ./tanzu-no-internet-env.sh
+docker login <TKG_CUSTOM_IMAGE_REGISTRY>
+source tanzu-no-internet-env.sh
 ./upload-images-to-repo.sh ./images-copy-list
 ```
+> if the tar image doesn't exist, then record to "/tmp/tkg_uploading_not_found_tar_list.txt" and continue the uploading the next item
+> if the image is already in the target repo, then skip uploading the image
+> it will keep retrying to upload the item until it success.
+
 now you are ready to install TKG. Enjoy Tanzu!
